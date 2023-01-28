@@ -4,12 +4,23 @@ package routers
 
 import (
 	"github.com/cloudwego/hertz/pkg/app/server"
-	handler "tiktok-gateway/internal/handler"
+	"tiktok-gateway/internal/handler"
+	"tiktok-gateway/internal/middleware"
 )
 
 // customizeRegister registers customize routers.
 func customizedRegister(r *server.Hertz) {
-	r.GET("/ping", handler.Ping)
+	group := r.Group("/douyin")
 
-	// your code ...
+	group.POST("/user/register", handler.Ping)
+	group.POST("/user/login", handler.Ping)
+
+	auth := group.Group("/user", middleware.JwtMiddleware.MiddlewareFunc())
+	auth.GET("/", handler.Ping)
+
+	auth = group.Group("/relation", middleware.JwtMiddleware.MiddlewareFunc())
+	auth.POST("/action", handler.Ping)
+	auth.GET("/follow/list", handler.Ping)
+	auth.GET("/follower/list", handler.Ping)
+	auth.GET("/friend/list", handler.Ping)
 }
