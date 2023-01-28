@@ -1,2 +1,2 @@
-# tiktok-hertz
-Gateway for simple-tiktok, including authentication, rooter, serve HTTP request
+# tiktok-gateway
+Gateway for simple-tiktok, using Hertz, including authentication, rooter, serve HTTP request
