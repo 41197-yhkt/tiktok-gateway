@@ -3,15 +3,34 @@
 package main
 
 import (
+	"context"
+	"github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/app/middlewares/client/sd"
 	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/common/config"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"github.com/hertz-contrib/registry/etcd"
 	"tiktok-gateway/internal/middleware"
 	routers "tiktok-gateway/internal/routers"
 )
 
 func main() {
+
 	middleware.InitJwt()
 	h := server.Default()
-
+	cli, err := client.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	r, err := etcd.NewEtcdResolver([]string{"127.0.0.1:2379"})
+	if err != nil {
+		panic(err)
+	}
+	cli.Use(sd.Discovery(r))
+	for i := 0; i < 10; i++ {
+		status, body, _ := cli.Get(context.Background(), nil, "http://hertz.test.demo/ping", config.WithSD(true))
+		hlog.Infof("HERTZ: code=%d,body=%s", status, string(body))
+	}
 	routers.Register(h)
 	h.Spin()
 }
