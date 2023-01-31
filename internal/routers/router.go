@@ -4,20 +4,20 @@ package routers
 
 import (
 	"github.com/cloudwego/hertz/pkg/app/server"
-	handler "tiktok-gateway/internal/handler"
+	"tiktok-gateway/internal/handler"
+	"tiktok-gateway/internal/middleware"
 )
 
 // customizeRegister registers customize routers.
 func customizedRegister(r *server.Hertz) {
-	r.GET("/ping", handler.Ping)
 	group := r.Group("/douyin")
-	group.GET("/feed", handler.DouyinFeedMethod)
-	group.POST("/publish/action", handler.DouyinPublishActionMethod)
-	group.GET("/publish/list", handler.DouyinPublishListMethod)
-	group.POST("/favorite/action", handler.DouyinFavoriteActionMethod)
-	group.GET("/favorite/list", handler.DouyinFavoriteListMethod)
-	group.POST("/comment/action", handler.DouyinCommentActionMethod)
-	group.GET("/comment/list", handler.DouyinCommentListMethod)
-	
-	// your code ...
+	group.POST("/user/register", handler.DouyinUserRegisterMethod)
+	group.POST("/user/login", middleware.JwtMiddleware.LoginHandler)
+	auth := group.Group("/user", middleware.JwtMiddleware.MiddlewareFunc())
+	auth.GET("/", handler.DouyinUserMethod)
+	auth = group.Group("/relation", middleware.JwtMiddleware.MiddlewareFunc())
+	auth.POST("/action", handler.DouyinUserMethod)
+	auth.GET("/follow/list", handler.DouyinUserMethod)
+	auth.GET("/follower/list", handler.DouyinUserMethod)
+	auth.GET("/friend/list", handler.DouyinUserMethod)
 }
