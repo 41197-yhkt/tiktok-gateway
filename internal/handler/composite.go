@@ -9,7 +9,7 @@ import (
 )
 
 // DouyinFeedMethod .
-// @router /douyin/feed [GET]
+// @router /relation/feed [GET]
 func DouyinFeedMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinFeedRequest
@@ -24,10 +24,8 @@ func DouyinFeedMethod(ctx context.Context, c *app.RequestContext) {
 	c.JSON(consts.StatusOK, resp)
 }
 
-
-
 // DouyinFavoriteActionMethod .
-// @router /douyin/favorite/action [POST]
+// @router /relation/favorite/action [POST]
 func DouyinFavoriteActionMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinFavoriteActionRequest
@@ -43,7 +41,7 @@ func DouyinFavoriteActionMethod(ctx context.Context, c *app.RequestContext) {
 }
 
 // DouyinFavoriteListMethod .
-// @router /douyin/favorite/list [GET]
+// @router /relation/favorite/list [GET]
 func DouyinFavoriteListMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinFavoriteListRequest
@@ -59,7 +57,7 @@ func DouyinFavoriteListMethod(ctx context.Context, c *app.RequestContext) {
 }
 
 // DouyinCommentActionMethod .
-// @router /douyin/comment/action [POST]
+// @router /relation/comment/action [POST]
 func DouyinCommentActionMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinCommentActionRequest
@@ -75,7 +73,7 @@ func DouyinCommentActionMethod(ctx context.Context, c *app.RequestContext) {
 }
 
 // DouyinCommentListMethod .
-// @router /douyin/comment/list [GET]
+// @router /relation/comment/list [GET]
 func DouyinCommentListMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinCommentListRequest

@@ -2,13 +2,13 @@ package handler
 
 import (
 	"context"
-	"tiktok-gateway/internal/model"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
+	"tiktok-gateway/internal/model"
 )
 
 // DouyinPublishActionMethod .
-// @router /douyin/publish/action [POST]
+// @router /relation/publish/action [POST]
 func DouyinPublishActionMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinPublishActionRequest
@@ -24,7 +24,7 @@ func DouyinPublishActionMethod(ctx context.Context, c *app.RequestContext) {
 }
 
 // DouyinPublishListMethod .
-// @router /douyin/publish/list [GET]
+// @router /relation/publish/list [GET]
 func DouyinPublishListMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinPublishListRequest
