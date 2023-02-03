@@ -3,6 +3,8 @@ package handler
 import (
 	"context"
 	"tiktok-gateway/internal/model"
+	"tiktok-gateway/internal/rpc"
+	"tiktok-gateway/kitex_gen/composite"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
@@ -36,6 +38,11 @@ func DouyinFavoriteActionMethod(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
+	// TODO: Tocken中拿到用户名
+	err = rpc.FavoriteAction(context.Background(), &composite.BasicFavoriteActionRequest{
+		VedioId: req.VedioID,
+		ActionType: req.ActionType,
+	})
 
 	resp := new(douyin.DouyinFavoriteActionResponse)
 
