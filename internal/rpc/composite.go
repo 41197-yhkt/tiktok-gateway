@@ -8,7 +8,6 @@ import (
 
 	"github.com/41197-yhkt/pkg/constants"
 	"github.com/41197-yhkt/pkg/errno"
-
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/retry"
 	etcd "github.com/kitex-contrib/registry-etcd"
@@ -44,11 +43,11 @@ func FavoriteAction(ctx context.Context, req *composite.BasicFavoriteActionReque
 	resp, err := compClient.BasicFavoriteActionMethod(ctx, req)
 
 	if err != nil {
-		return *errno.ErrorCallFall
+		return *errno.ServerError
 	}
 	if resp.BaseResp.StatusCode != 0 {
 		errInt := int(resp.BaseResp.StatusCode)
-		return *errno.NewErrNo(errInt, errno.Codes[errInt])
+		return *errno.NewErrNo(errInt, *resp.BaseResp.StatusMsg)
 	}
 	return *errno.Success
 }
@@ -57,11 +56,11 @@ func FavoriteList(ctx context.Context, req *composite.BasicFavoriteListRequest) 
 	resp, err := compClient.BasicFavoriteListMethod(ctx, req)
 
 	if err != nil {
-		return *errno.ErrorCallFall, nil
+		return *errno.ServerError, nil
 	}
 	if resp.BaseResp.StatusCode != 0 {
 		errInt := int(resp.BaseResp.StatusCode)
-		return *errno.NewErrNo(errInt, errno.Codes[errInt]), nil
+		return *errno.NewErrNo(errInt, *resp.BaseResp.StatusMsg), nil
 	}
 
 	return *errno.Success, resp.VedioList
@@ -71,11 +70,11 @@ func FeedMethod(ctx context.Context, req *composite.BasicFeedRequest) (errno.Err
 	resp, err := compClient.BasicFeedMethod(ctx, req)
 
 	if err != nil {
-		return *errno.ErrorCallFall, nil, nil
+		return *errno.ServerError, nil, nil
 	}
 	if resp.BaseResp.StatusCode != 0 {
 		errInt := int(resp.BaseResp.StatusCode)
-		return *errno.NewErrNo(errInt, errno.Codes[errInt]), nil, nil
+		return *errno.NewErrNo(errInt, *resp.BaseResp.StatusMsg), nil, nil
 	}
 
 	return *errno.Success, resp.VedioList, resp.NextTime
@@ -85,11 +84,11 @@ func CommentAction(ctx context.Context, req *composite.BasicCommentActionRequest
 	resp, err := compClient.BasicCommentActionMethod(ctx, req)
 
 	if err != nil {
-		return *errno.ErrorCallFall
+		return *errno.ServerError
 	}
 	if resp.BaseResp.StatusCode != 0 {
 		errInt := int(resp.BaseResp.StatusCode)
-		return *errno.NewErrNo(errInt, errno.Codes[errInt])
+		return *errno.NewErrNo(errInt, *resp.BaseResp.StatusMsg)
 	}
 	return *errno.Success
 }
@@ -98,11 +97,11 @@ func CommentList(ctx context.Context, req *composite.BasicCommentListRequest) (e
 	resp, err := compClient.BasicCommentListMethod(ctx, req)
 
 	if err != nil {
-		return *errno.ErrorCallFall, nil
+		return *errno.ServerError, nil
 	}
 	if resp.BaseResp.StatusCode != 0 {
 		errInt := int(resp.BaseResp.StatusCode)
-		return *errno.NewErrNo(errInt, errno.Codes[errInt]), nil
+		return *errno.NewErrNo(errInt, *resp.BaseResp.StatusMsg), nil
 	}
 	return *errno.Success, resp.CommentList
 }

@@ -3,7 +3,7 @@ module tiktok-gateway
 go 1.17
 
 require (
-	github.com/41197-yhkt/pkg v0.0.0-20230204134136-dd1dd3312a13
+	github.com/41197-yhkt/pkg v0.0.0-20230206133713-5a6cae4af996
 	github.com/apache/thrift v0.17.0
 	github.com/cloudwego/hertz v0.5.1
 )

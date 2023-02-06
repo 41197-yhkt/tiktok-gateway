@@ -13,6 +13,8 @@ cloud.google.com/go/storage v1.0.0/go.mod h1:IhtSnM/ZTZV8YYJWCY8RULGVqBDmpoyjwiy
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
 github.com/41197-yhkt/pkg v0.0.0-20230204134136-dd1dd3312a13 h1:MtqP3mOmKmcsXy+fXd9sSykauRajtPKG8Vl0TxFdBOU=
 github.com/41197-yhkt/pkg v0.0.0-20230204134136-dd1dd3312a13/go.mod h1:CBkExA0eNA6owH409+xFGLOQa6PcxJgFGzTzShZYo7o=
+github.com/41197-yhkt/pkg v0.0.0-20230206133713-5a6cae4af996 h1:Wj7rbtxbTTks7zj08WWnIGJGFoszXSBaSKH3QaGFMoc=
+github.com/41197-yhkt/pkg v0.0.0-20230206133713-5a6cae4af996/go.mod h1:CBkExA0eNA6owH409+xFGLOQa6PcxJgFGzTzShZYo7o=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/HdrHistogram/hdrhistogram-go v1.1.2/go.mod h1:yDgFjdqOqDEKOvasDdhWNXYg9BVp4O+o5f6V/ehm6Oo=
