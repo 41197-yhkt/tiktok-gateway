@@ -64,21 +64,21 @@ func FavoriteList(ctx context.Context, req *composite.BasicFavoriteListRequest) 
 		return *errno.NewErrNo(errInt, errno.Codes[errInt]), nil
 	}
 
-
 	return *errno.Success, resp.VedioList
 }
 
-func FeedMethod(ctx context.Context, req *composite.BasicFeedRequest) errno.ErrNo{
+func FeedMethod(ctx context.Context, req *composite.BasicFeedRequest)( errno.ErrNo,[]*composite.Vedio, *int64){
 	resp, err:= compClient.BasicFeedMethod(ctx, req)
 
 	if err != nil{
-		return *errno.ErrorCallFall
+		return *errno.ErrorCallFall, nil, nil
 	}
 	if resp.BaseResp.StatusCode != 0{
 		errInt := int(resp.BaseResp.StatusCode)
-		return *errno.NewErrNo(errInt, errno.Codes[errInt])
+		return *errno.NewErrNo(errInt, errno.Codes[errInt]), nil, nil
 	}
-	return *errno.Success
+
+	return *errno.Success, resp.VedioList, resp.NextTime
 }
 
 func CommentAction(ctx context.Context, req *composite.BasicCommentActionRequest) errno.ErrNo{
