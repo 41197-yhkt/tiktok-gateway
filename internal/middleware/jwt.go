@@ -18,7 +18,7 @@ import (
 
 var (
 	JwtMiddleware *jwt.HertzJWTMiddleware
-	identityKey   = "identity"
+	IdentityKey   = "identity"
 )
 
 func InitJwt() {
@@ -32,7 +32,7 @@ func InitJwt() {
 		PayloadFunc: func(data interface{}) jwt.MapClaims {
 			if v, ok := data.(*user.DouyinUserLoginResponse); ok {
 				return jwt.MapClaims{
-					identityKey: v.UserId,
+					IdentityKey: v.UserId,
 				}
 			}
 			return jwt.MapClaims{}
@@ -45,6 +45,12 @@ func InitJwt() {
 				"user_id ":    id,
 				"status_msg":  "success",
 			})
+		},
+		IdentityHandler: func(ctx context.Context, c *app.RequestContext) interface{} {
+			claims := jwt.ExtractClaims(ctx, c)
+			return &user.User{
+				Id: claims[IdentityKey].(int64),
+			}
 		},
 		Authenticator: func(ctx context.Context, c *app.RequestContext) (interface{}, error) {
 			method, _ := handler.DouyinUserLoginMethod(ctx, c)
