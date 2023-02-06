@@ -1,7 +1,7 @@
 package rpc
 
 import (
-	"tiktok/kitex_gen/composite/compositeservice"
+	//"tiktok/kitex_gen/composite/compositeservice"
 	// "time"
 
 	// "pkg/constants"
@@ -11,7 +11,7 @@ import (
 	// trace "github.com/kitex-contrib/tracer-opentracing"
 )
 
-var videoClient compositeservice.Client
+//var videoClient compositeservice.Client
 
 func initVideoRPC(){
 	// r, err := etcd.NewEtcdResolver([]string{constants.EtcdAddress})
