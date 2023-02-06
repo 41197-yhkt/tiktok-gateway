@@ -5,7 +5,7 @@ import (
 	"log"
 	douyin "tiktok-gateway/internal/model"
 	"tiktok-gateway/kitex_gen/user"
-	"tiktok-gateway/kitex_gen/user/douyinservice"
+	"tiktok-gateway/kitex_gen/user/userservice"
 	"time"
 
 	"github.com/cloudwego/kitex/client"
@@ -19,7 +19,7 @@ import (
 // @router /douyin/user/register [POST]
 func DouyinUserRegisterMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req user.DouyinUserRegisterRequest
+	var req user.UserRegisterRequest
 	err = c.BindAndValidate(&req)
 	log.Print(req)
 	if err != nil {
@@ -31,29 +31,29 @@ func DouyinUserRegisterMethod(ctx context.Context, c *app.RequestContext) {
 		log.Fatal(err)
 	}
 
-	client, err := douyinservice.NewClient("user", client.WithResolver(r))
+	client, err := userservice.NewClient("user", client.WithResolver(r))
 	if err != nil {
 		log.Fatal(err)
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
-	resp, err := client.DouyinUserRegisterMethod(ctx, &req)
+	resp, err := client.UserRegister(ctx, &req)
 	cancel()
 	if err != nil {
 		log.Fatal(err)
 	}
 	c.JSON(consts.StatusOK, resp)
 }
-
+// 
 // DouyinUserLoginMethod .
 // @router /douyin/user/login [POST]
 func DouyinUserLoginMethod(ctx context.Context, c *app.RequestContext) (interface{}, error) {
-	return &user.DouyinUserLoginResponse{
+	return &user.UserLoginResponse{
 		BaseResp: nil,
 		UserId:1,
 	},nil
 	
 	var err error
-	var req user.DouyinUserLoginRequest
+	var req user.UserLoginRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		return nil, err
@@ -63,12 +63,12 @@ func DouyinUserLoginMethod(ctx context.Context, c *app.RequestContext) (interfac
 		return nil, err
 	}
 
-	client, err := douyinservice.NewClient("user", client.WithResolver(r))
+	client, err := userservice.NewClient("user", client.WithResolver(r))
 	if err != nil {
 		return nil, err
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
-	resp, err := client.DouyinUserLoginMethod(ctx, &req)
+	resp, err := client.UserLogin(ctx, &req)
 	cancel()
 	if err != nil {
 		return nil, err
@@ -81,7 +81,7 @@ func DouyinUserLoginMethod(ctx context.Context, c *app.RequestContext) (interfac
 // @router /douyin/user [GET]
 func DouyinUserMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req user.DouyinUserRequest
+	var req user.UserInfoRequest
 	err = c.BindAndValidate(&req)
 	log.Print(req)
 	if err != nil {
@@ -93,12 +93,12 @@ func DouyinUserMethod(ctx context.Context, c *app.RequestContext) {
 		log.Fatal(err)
 	}
 
-	client, err := douyinservice.NewClient("user", client.WithResolver(r))
+	client, err := userservice.NewClient("user", client.WithResolver(r))
 	if err != nil {
 		log.Fatal(err)
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
-	resp, err := client.DouyinUserMethod(ctx, &req)
+	resp, err := client.UserInfo(ctx, &req)
 	cancel()
 	if err != nil {
 		log.Fatal(err)

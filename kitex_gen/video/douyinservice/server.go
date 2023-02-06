@@ -3,11 +3,11 @@ package douyinservice
 
 import (
 	server "github.com/cloudwego/kitex/server"
-	user "tiktok-gateway/kitex_gen/user"
+	video "tiktok-gateway/kitex_gen/video"
 )
 
 // NewServer creates a server.Server with the given handler and options.
-func NewServer(handler user.DouyinService, opts ...server.Option) server.Server {
+func NewServer(handler video.DouyinService, opts ...server.Option) server.Server {
 	var options []server.Option
 
 	options = append(options, opts...)

@@ -3,6 +3,7 @@ module tiktok-gateway
 go 1.17
 
 require (
+	github.com/41197-yhkt/pkg v0.0.0-20230206133713-5a6cae4af996
 	github.com/apache/thrift v0.17.0
 	github.com/cloudwego/hertz v0.5.1
 )
@@ -36,7 +37,6 @@ require (
 )
 
 require (
-	github.com/41197-yhkt/pkg v0.0.0-20230206133713-5a6cae4af996
 	github.com/bytedance/go-tagexpr/v2 v2.9.2 // indirect
 	github.com/bytedance/gopkg v0.0.0-20220531084716-665b4f21126f // indirect
 	github.com/bytedance/sonic v1.5.0 // indirect

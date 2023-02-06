@@ -30,7 +30,7 @@
 		 TokenLookup:   "header: Authorization, query: token, cookie: jwt",
 		 // TokenHeadName: "Bearer",
 		 PayloadFunc: func(data interface{}) jwt.MapClaims {
-			 if v, ok := data.(*user.DouyinUserLoginResponse); ok {
+			 if v, ok := data.(*user.UserLoginResponse); ok {
 				 return jwt.MapClaims{
 					 identityKey: v.UserId,
 				 }
@@ -48,7 +48,7 @@
 		 },
 		 Authenticator: func(ctx context.Context, c *app.RequestContext) (interface{}, error) {
 			 method, _ := handler.DouyinUserLoginMethod(ctx, c)
-			 c.Set("user_id", method.(*user.DouyinUserLoginResponse).UserId)
+			 c.Set("user_id", method.(*user.UserLoginResponse).UserId)
 			 return method, nil
 		 },
 		 HTTPStatusMessageFunc: func(e error, ctx context.Context, c *app.RequestContext) string {
