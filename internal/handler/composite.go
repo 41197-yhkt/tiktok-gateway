@@ -84,28 +84,15 @@ func DouyinFavoriteActionMethod(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	// TODO: Tocken中拿到用户名
-	claim := jwt.ExtractClaims(ctx, c)
-
-	user_id, ok := claim["user_id"]
-
-	if !ok {
-		hlog.DefaultLogger().Info("user id not exist in jwt")
-		SendResponse(c, *errno.UnauthorizedTokenError)
+	// 获取uid
+	uid, errNo := getUserIdFromJWT(ctx, c)
+	if errNo != *errno.Success {
+		SendResponse(c, errNo)
 		return
 	}
+	hlog.DefaultLogger().Info("user_id=", uid)
 
-	uid, ok := user_id.(int64)
-
-	if !ok {
-		hlog.DefaultLogger().Info("user id assert fail")
-		SendResponse(c, *errno.UnauthorizedTokenError)
-		return
-	}
-
-	hlog.DefaultLogger().Info("user_id=", user_id)
-
-	errNo := rpc.FavoriteAction(context.Background(), &composite.BasicFavoriteActionRequest{
+	errNo = rpc.FavoriteAction(context.Background(), &composite.BasicFavoriteActionRequest{
 		VedioId:    req.VedioID,
 		ActionType: req.ActionType,
 		UserId:     uid,
@@ -116,7 +103,7 @@ func DouyinFavoriteActionMethod(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	SendResponse(c, *errno.Success)
+	SendResponse(c, errNo)
 }
 
 // DouyinFavoriteListMethod .
@@ -134,7 +121,6 @@ func DouyinFavoriteListMethod(ctx context.Context, c *app.RequestContext) {
 		UserId:  req.UserID,
 		QueryId: req.UserID,
 	})
-
 	if errNo != *errno.Success {
 		SendResponse(c, errNo)
 		return
@@ -163,12 +149,10 @@ func DouyinFavoriteListMethod(ctx context.Context, c *app.RequestContext) {
 		videosHTTP = append(videosHTTP, &videoHttp)
 	}
 
-	msg := "get success"
 	resp := douyin.DouyinFavoriteListResponse{
 		VedioList: videosHTTP,
 		BaseResp: &douyin.BaseResp{
 			StatusCode: 0,
-			StatusMsg:  &msg,
 		},
 	}
 
@@ -205,7 +189,16 @@ func DouyinCommentActionMethod(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := new(douyin.DouyinCommentActionResponse)
+	resp := douyin.DouyinCommentActionResponse{
+		BaseResp: &douyin.BaseResp{
+			StatusCode: 0,
+		},
+		Comment: &douyin.Comment{
+			ID: uid,
+			Content: *req.CommentText,
+			
+		},
+	}
 
 	c.JSON(consts.StatusOK, resp)
 }

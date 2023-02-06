@@ -2,13 +2,14 @@ package handler
 
 import (
 	"context"
-	"github.com/cloudwego/kitex/client"
-	etcd "github.com/kitex-contrib/registry-etcd"
 	"log"
-	"tiktok-gateway/internal/model"
+	douyin "tiktok-gateway/internal/model"
 	"tiktok-gateway/kitex_gen/user"
 	"tiktok-gateway/kitex_gen/user/douyinservice"
 	"time"
+
+	"github.com/cloudwego/kitex/client"
+	etcd "github.com/kitex-contrib/registry-etcd"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
@@ -46,6 +47,11 @@ func DouyinUserRegisterMethod(ctx context.Context, c *app.RequestContext) {
 // DouyinUserLoginMethod .
 // @router /douyin/user/login [POST]
 func DouyinUserLoginMethod(ctx context.Context, c *app.RequestContext) (interface{}, error) {
+	return &user.DouyinUserLoginResponse{
+		BaseResp: nil,
+		UserId:1,
+	},nil
+	
 	var err error
 	var req user.DouyinUserLoginRequest
 	err = c.BindAndValidate(&req)
