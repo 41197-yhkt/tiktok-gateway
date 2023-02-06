@@ -11,8 +11,7 @@ import (
 // customizeRegister registers customize routers.
 func customizedRegister(r *server.Hertz) {
 	group := r.Group("/douyin")
-	group.GET("/ws", handler.ChatMethod)
-	group.POST("/user/register", middleware.JwtMiddleware.LoginHandler, handler.DouyinUserRegisterMethod)
+	group.POST("/user/register", handler.DouyinUserRegisterMethod, middleware.JwtMiddleware.LoginHandler)
 	group.POST("/user/login", middleware.JwtMiddleware.LoginHandler)
 	auth := group.Group("/user", middleware.JwtMiddleware.MiddlewareFunc())
 	auth.GET("/", handler.DouyinUserMethod)
@@ -29,12 +28,12 @@ func customizedRegister(r *server.Hertz) {
 	// auth2 := group.Group("/publish",middleware.JwtMiddleware.MiddlewareFunc())
 	// auth3 := group.Group("/favourite",middleware.JwtMiddleware.MiddlewareFunc())
 	// auth4 := group.Group("/comment",middleware.JwtMiddleware.MiddlewareFunc())
-	
+
 	group.POST("/publish/action", handler.DouyinPublishActionMethod)
 	group.GET("/publish/list", handler.DouyinPublishListMethod)
 	group.POST("/favorite/action", handler.DouyinFavoriteActionMethod)
 	group.GET("/favorite/list", handler.DouyinFavoriteListMethod)
 	group.POST("/comment/action", handler.DouyinCommentActionMethod)
 	group.GET("/comment/list", handler.DouyinCommentListMethod)
-	
+
 }

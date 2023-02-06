@@ -18,6 +18,7 @@ import (
 // DouyinUserRegisterMethod .
 // @router /relation/user/register [POST]
 func DouyinUserRegisterMethod(ctx context.Context, c *app.RequestContext) {
+	//return
 	var err error
 	var req user.DouyinUserRegisterRequest
 	err = c.BindAndValidate(&req)
@@ -36,17 +37,20 @@ func DouyinUserRegisterMethod(ctx context.Context, c *app.RequestContext) {
 		log.Fatal(err)
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
-	resp, err := client.DouyinUserRegisterMethod(ctx, &req)
+	_, err = client.DouyinUserRegisterMethod(ctx, &req)
 	cancel()
 	if err != nil {
 		log.Fatal(err)
 	}
-	c.JSON(consts.StatusOK, resp)
 }
 
 // DouyinUserLoginMethod .
 // @router /relation/user/login [POST]
 func DouyinUserLoginMethod(ctx context.Context, c *app.RequestContext) (interface{}, error) {
+	//return &user.DouyinUserLoginResponse{
+	//	BaseResp: nil,
+	//	UserId:   1,
+	//}, nil
 	var err error
 	var req user.DouyinUserLoginRequest
 	err = c.BindAndValidate(&req)

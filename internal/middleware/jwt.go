@@ -18,28 +18,38 @@ import (
 
 var (
 	JwtMiddleware *jwt.HertzJWTMiddleware
+	identityKey   = "identity"
 )
 
 func InitJwt() {
 	var err error
 	JwtMiddleware, err = jwt.New(&jwt.HertzJWTMiddleware{
 		Key:           []byte("tiktok"), //密钥
-		Timeout:       time.Hour,
-		MaxRefresh:    time.Hour,
+		Timeout:       time.Hour * 24,
+		MaxRefresh:    time.Hour * 24,
 		TokenLookup:   "header: Authorization, query: token, cookie: jwt",
 		TokenHeadName: "Bearer",
+		PayloadFunc: func(data interface{}) jwt.MapClaims {
+			if v, ok := data.(*user.DouyinUserLoginResponse); ok {
+				return jwt.MapClaims{
+					identityKey: v.UserId,
+				}
+			}
+			return jwt.MapClaims{}
+		},
 		LoginResponse: func(ctx context.Context, c *app.RequestContext, code int, token string, expire time.Time) {
-			var req user.DouyinUserResponse
-			err = c.BindAndValidate(&req)
+			id, _ := c.Get("user_id")
 			c.JSON(http.StatusOK, utils.H{
 				"status_code": code,
 				"token":       token,
-				"user_id ":    req.GetUser().Id,
+				"user_id ":    id,
 				"status_msg":  "success",
 			})
 		},
 		Authenticator: func(ctx context.Context, c *app.RequestContext) (interface{}, error) {
-			return handler.DouyinUserLoginMethod(ctx, c)
+			method, _ := handler.DouyinUserLoginMethod(ctx, c)
+			c.Set("user_id", method.(*user.DouyinUserLoginResponse).UserId)
+			return method, nil
 		},
 		HTTPStatusMessageFunc: func(e error, ctx context.Context, c *app.RequestContext) string {
 			hlog.CtxErrorf(ctx, "jwt err information => %+v", e.Error())
