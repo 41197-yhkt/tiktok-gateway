@@ -8,7 +8,9 @@ import (
 	"tiktok-gateway/kitex_gen/composite"
 
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
+	"github.com/hertz-contrib/jwt"
 )
 
 // DouyinFeedMethod .
@@ -38,18 +40,40 @@ func DouyinFavoriteActionMethod(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
+
 	// TODO: Tocken中拿到用户名
+	claim := jwt.ExtractClaims(ctx, c)
+
+	user_id, ok := claim["user_id"]
+
+	if !ok {
+		hlog.DefaultLogger().Info("user id not exist in jwt")
+		SendResponse(c, *errno.UnauthorizedTokenError)
+		return
+	}
+
+	uid, ok := user_id.(int64)
+
+	if !ok {
+		hlog.DefaultLogger().Info("user id assert fail")
+		SendResponse(c, *errno.UnauthorizedTokenError)
+		return
+	}
+
+	hlog.DefaultLogger().Info("user_id=", user_id)
+
 	errNo := rpc.FavoriteAction(context.Background(), &composite.BasicFavoriteActionRequest{
 		VedioId:    req.VedioID,
 		ActionType: req.ActionType,
+		UserId: uid,
 	})
 
 	if errNo != *errno.Success {
 		SendResponse(c, errNo)
+		return
 	}
-	resp := new(douyin.DouyinFavoriteActionResponse)
 
-	c.JSON(consts.StatusOK, resp)
+	SendResponse(c, *errno.Success)
 }
 
 // DouyinFavoriteListMethod .

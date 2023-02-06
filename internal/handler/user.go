@@ -2,7 +2,13 @@ package handler
 
 import (
 	"context"
+	"github.com/cloudwego/kitex/client"
+	etcd "github.com/kitex-contrib/registry-etcd"
+	"log"
 	"tiktok-gateway/internal/model"
+	"tiktok-gateway/kitex_gen/user"
+	"tiktok-gateway/kitex_gen/user/douyinservice"
+	"time"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
@@ -12,47 +18,85 @@ import (
 // @router /douyin/user/register [POST]
 func DouyinUserRegisterMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req douyin.DouyinUserRegisterRequest
+	var req user.DouyinUserRegisterRequest
 	err = c.BindAndValidate(&req)
+	log.Print(req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
-		return
+		log.Fatal("Bind ERROR")
 	}
 
-	resp := new(douyin.DouyinUserRegisterResponse)
+	r, err := etcd.NewEtcdResolver([]string{"127.0.0.1:2379"})
+	if err != nil {
+		log.Fatal(err)
+	}
 
+	client, err := douyinservice.NewClient("user", client.WithResolver(r))
+	if err != nil {
+		log.Fatal(err)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
+	resp, err := client.DouyinUserRegisterMethod(ctx, &req)
+	cancel()
+	if err != nil {
+		log.Fatal(err)
+	}
 	c.JSON(consts.StatusOK, resp)
 }
 
 // DouyinUserLoginMethod .
 // @router /douyin/user/login [POST]
-func DouyinUserLoginMethod(ctx context.Context, c *app.RequestContext) {
+func DouyinUserLoginMethod(ctx context.Context, c *app.RequestContext) (interface{}, error) {
 	var err error
-	var req douyin.DouyinUserLoginRequest
+	var req user.DouyinUserLoginRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
-		return
+		return nil, err
+	}
+	r, err := etcd.NewEtcdResolver([]string{"127.0.0.1:2379"})
+	if err != nil {
+		return nil, err
 	}
 
-	resp := new(douyin.DouyinUserLoginResponse)
+	client, err := douyinservice.NewClient("user", client.WithResolver(r))
+	if err != nil {
+		return nil, err
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
+	resp, err := client.DouyinUserLoginMethod(ctx, &req)
+	cancel()
+	if err != nil {
+		return nil, err
+	}
 
-	c.JSON(consts.StatusOK, resp)
+	return resp, nil
 }
 
 // DouyinUserMethod .
 // @router /douyin/user [GET]
 func DouyinUserMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req douyin.DouyinUserRequest
+	var req user.DouyinUserRequest
 	err = c.BindAndValidate(&req)
+	log.Print(req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
-		return
+		log.Fatal("Bind ERROR")
 	}
 
-	resp := new(douyin.DouyinUserResponse)
+	r, err := etcd.NewEtcdResolver([]string{"127.0.0.1:2379"})
+	if err != nil {
+		log.Fatal(err)
+	}
 
+	client, err := douyinservice.NewClient("user", client.WithResolver(r))
+	if err != nil {
+		log.Fatal(err)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
+	resp, err := client.DouyinUserMethod(ctx, &req)
+	cancel()
+	if err != nil {
+		log.Fatal(err)
+	}
 	c.JSON(consts.StatusOK, resp)
 }
 
