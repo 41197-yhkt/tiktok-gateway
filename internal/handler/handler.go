@@ -1,6 +1,9 @@
 package handler
 
 import (
+	"net/http"
+	"pkg/errno"
+
 	"github.com/cloudwego/hertz/pkg/app"
 	//"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
@@ -12,11 +15,9 @@ type Response struct {
 }
 
 // SendResponse pack response
-func SendResponse(c *app.RequestContext, err error, data interface{}) {
-	// Err := errno.ConvertErr(err)
-	// c.JSON(consts.StatusOK, Response{
-	// 	Code:    Err.ErrCode,
-	// 	Message: Err.ErrMsg,
-	// 	Data:    data,
-	// })
+func SendResponse(c *app.RequestContext, err errno.ErrNo) {
+	c.JSON(http.StatusOK, Response{
+		Code:    int64(err.Code),
+		Message: err.Msg,
+	})
 }

@@ -40,67 +40,69 @@ func initCompRPC(){
 	compClient = c
 }
 
-func FavoriteAction(ctx context.Context, req *composite.BasicFavoriteActionRequest) error{
+func FavoriteAction(ctx context.Context, req *composite.BasicFavoriteActionRequest) errno.ErrNo{
 	resp, err:= compClient.BasicFavoriteActionMethod(ctx, req)
 
 	if err != nil{
-		return err
+		return *errno.ErrorCallFall
 	}
 	if resp.BaseResp.StatusCode != 0{
 		errInt := int(resp.BaseResp.StatusCode)
-		return errno.NewErrNo(errInt, errno.Codes[errInt])
+		return *errno.NewErrNo(errInt, errno.Codes[errInt])
 	}
-	return nil
+	return *errno.Success
 }
 
-func FavoriteList(ctx context.Context, req *composite.BasicFavoriteListRequest) error{
+func FavoriteList(ctx context.Context, req *composite.BasicFavoriteListRequest) ( errno.ErrNo, []*composite.Vedio){
 	resp, err:= compClient.BasicFavoriteListMethod(ctx, req)
 
 	if err != nil{
-		return err
+		return *errno.ErrorCallFall, nil
 	}
 	if resp.BaseResp.StatusCode != 0{
 		errInt := int(resp.BaseResp.StatusCode)
-		return errno.NewErrNo(errInt, errno.Codes[errInt])
+		return *errno.NewErrNo(errInt, errno.Codes[errInt]), nil
 	}
-	return nil
+
+
+	return *errno.Success, resp.VedioList
 }
 
-func FeedMethod(ctx context.Context, req *composite.BasicFeedRequest) error{
+func FeedMethod(ctx context.Context, req *composite.BasicFeedRequest) errno.ErrNo{
 	resp, err:= compClient.BasicFeedMethod(ctx, req)
 
 	if err != nil{
-		return err
+		return *errno.ErrorCallFall
 	}
 	if resp.BaseResp.StatusCode != 0{
 		errInt := int(resp.BaseResp.StatusCode)
-		return errno.NewErrNo(errInt, errno.Codes[errInt])
+		return *errno.NewErrNo(errInt, errno.Codes[errInt])
 	}
-	return nil
+	return *errno.Success
 }
 
-func CommentAction(ctx context.Context, req *composite.BasicCommentActionRequest) error{
+func CommentAction(ctx context.Context, req *composite.BasicCommentActionRequest) errno.ErrNo{
 	resp, err:= compClient.BasicCommentActionMethod(ctx, req)
 
 	if err != nil{
-		return err
+		return *errno.ErrorCallFall
 	}
 	if resp.BaseResp.StatusCode != 0{
 		errInt := int(resp.BaseResp.StatusCode)
-		return errno.NewErrNo(errInt, errno.Codes[errInt])
+		return *errno.NewErrNo(errInt, errno.Codes[errInt])
 	}
-	return nil
+	return *errno.Success
 }
 
-func CommentList(ctx context.Context, req *composite.BasicCommentListRequest) error{
+func CommentList(ctx context.Context, req *composite.BasicCommentListRequest) (errno.ErrNo, []*composite.Comment){
 	resp, err:= compClient.BasicCommentListMethod(ctx, req)
 
 	if err != nil{
-		return err
+		return *errno.ErrorCallFall, nil
 	}
 	if resp.BaseResp.StatusCode != 0{
 		errInt := int(resp.BaseResp.StatusCode)
-		return errno.NewErrNo(errInt, errno.Codes[errInt])
+		return *errno.NewErrNo(errInt, errno.Codes[errInt]), nil
 	}
-	return nil
+	return *errno.Success, resp.CommentList
 }

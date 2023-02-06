@@ -2,7 +2,8 @@ package handler
 
 import (
 	"context"
-	"tiktok-gateway/internal/model"
+	"pkg/errno"
+	douyin "tiktok-gateway/internal/model"
 	"tiktok-gateway/internal/rpc"
 	"tiktok-gateway/kitex_gen/composite"
 
@@ -12,6 +13,7 @@ import (
 
 // DouyinFeedMethod .
 // @router /douyin/feed [GET]
+// TODO: fix feed idl
 func DouyinFeedMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinFeedRequest
@@ -26,8 +28,6 @@ func DouyinFeedMethod(ctx context.Context, c *app.RequestContext) {
 	c.JSON(consts.StatusOK, resp)
 }
 
-
-
 // DouyinFavoriteActionMethod .
 // @router /douyin/favorite/action [POST]
 func DouyinFavoriteActionMethod(ctx context.Context, c *app.RequestContext) {
@@ -39,11 +39,14 @@ func DouyinFavoriteActionMethod(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	// TODO: Tocken中拿到用户名
-	err = rpc.FavoriteAction(context.Background(), &composite.BasicFavoriteActionRequest{
-		VedioId: req.VedioID,
+	errNo := rpc.FavoriteAction(context.Background(), &composite.BasicFavoriteActionRequest{
+		VedioId:    req.VedioID,
 		ActionType: req.ActionType,
 	})
 
+	if errNo != *errno.Success {
+		SendResponse(c, errNo)
+	}
 	resp := new(douyin.DouyinFavoriteActionResponse)
 
 	c.JSON(consts.StatusOK, resp)
