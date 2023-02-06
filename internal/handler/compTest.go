@@ -7,8 +7,8 @@ import (
 	"tiktok-gateway/internal/rpc"
 	"tiktok-gateway/kitex_gen/composite"
 
+	//"github.com/41197-yhkt/pkg/constants"
 	"github.com/41197-yhkt/pkg/errno"
-	"github.com/hertz-contrib/jwt"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
@@ -16,8 +16,9 @@ import (
 )
 
 // DouyinFeedMethod .
-// @router /relation/feed [GET]
-func DouyinFeedMethod(ctx context.Context, c *app.RequestContext) {
+// @router /douyin/feed [GET]
+// TODO: fix feed idl
+func testDouyinFeedMethod(ctx context.Context, c *app.RequestContext) {
 	hlog.Info("in feed")
 	var err error
 	var req douyin.DouyinFeedRequest
@@ -73,9 +74,8 @@ func DouyinFeedMethod(ctx context.Context, c *app.RequestContext) {
 	c.JSON(consts.StatusOK, resp)
 }
 
-// DouyinFavoriteActionMethod .
-// @router /relation/favorite/action [POST]
-func DouyinFavoriteActionMethod(ctx context.Context, c *app.RequestContext) {
+
+func DouyinFavoriteActionMethodTest(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinFavoriteActionRequest
 	err = c.BindAndValidate(&req)
@@ -92,11 +92,14 @@ func DouyinFavoriteActionMethod(ctx context.Context, c *app.RequestContext) {
 	}
 	hlog.DefaultLogger().Info("user_id=", uid)
 
-	errNo = rpc.FavoriteAction(context.Background(), &composite.BasicFavoriteActionRequest{
-		VedioId:    req.VedioID,
-		ActionType: req.ActionType,
-		UserId:     uid,
-	})
+	// RPC调用返回true
+	// errNo = rpc.FavoriteAction(context.Background(), &composite.BasicFavoriteActionRequest{
+	// 	VedioId:    req.VedioID,
+	// 	ActionType: req.ActionType,
+	// 	UserId:     uid,
+	// })
+
+	errNo = *errno.Success
 
 	if errNo != *errno.Success {
 		SendResponse(c, errNo)
@@ -106,9 +109,8 @@ func DouyinFavoriteActionMethod(ctx context.Context, c *app.RequestContext) {
 	SendResponse(c, errNo)
 }
 
-// DouyinFavoriteListMethod .
-// @router /relation/favorite/list [GET]
-func DouyinFavoriteListMethod(ctx context.Context, c *app.RequestContext) {
+
+func testDouyinFavoriteListMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinFavoriteListRequest
 	err = c.BindAndValidate(&req)
@@ -121,6 +123,7 @@ func DouyinFavoriteListMethod(ctx context.Context, c *app.RequestContext) {
 		UserId:  req.UserID,
 		QueryId: req.UserID,
 	})
+
 	if errNo != *errno.Success {
 		SendResponse(c, errNo)
 		return
@@ -149,19 +152,20 @@ func DouyinFavoriteListMethod(ctx context.Context, c *app.RequestContext) {
 		videosHTTP = append(videosHTTP, &videoHttp)
 	}
 
+	msg := "get success"
 	resp := douyin.DouyinFavoriteListResponse{
 		VedioList: videosHTTP,
 		BaseResp: &douyin.BaseResp{
 			StatusCode: 0,
+			StatusMsg:  &msg,
 		},
 	}
 
 	c.JSON(http.StatusOK, resp)
 }
 
-// DouyinCommentActionMethod .
-// @router /relation/comment/action [POST]
-func DouyinCommentActionMethod(ctx context.Context, c *app.RequestContext) {
+
+func testDouyinCommentActionMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinCommentActionRequest
 	err = c.BindAndValidate(&req)
@@ -171,7 +175,7 @@ func DouyinCommentActionMethod(ctx context.Context, c *app.RequestContext) {
 	}
 	uid, errNo := getUserIdFromJWT(ctx, c)
 
-	if err != *errno.Success {
+	if errNo != *errno.Success {
 		SendResponse(c, errNo)
 		return
 	}
@@ -189,23 +193,13 @@ func DouyinCommentActionMethod(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := douyin.DouyinCommentActionResponse{
-		BaseResp: &douyin.BaseResp{
-			StatusCode: 0,
-		},
-		Comment: &douyin.Comment{
-			ID: uid,
-			Content: *req.CommentText,
-			
-		},
-	}
+	resp := new(douyin.DouyinCommentActionResponse)
 
 	c.JSON(consts.StatusOK, resp)
 }
 
-// DouyinCommentListMethod .
-// @router /relation/comment/list [GET]
-func DouyinCommentListMethod(ctx context.Context, c *app.RequestContext) {
+
+func testDouyinCommentListMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinCommentListRequest
 	err = c.BindAndValidate(&req)
@@ -246,22 +240,3 @@ func DouyinCommentListMethod(ctx context.Context, c *app.RequestContext) {
 	c.JSON(consts.StatusOK, resp)
 }
 
-func getUserIdFromJWT(ctx context.Context, c *app.RequestContext) (int64, errno.ErrNo) {
-	claim := jwt.ExtractClaims(ctx, c)
-
-	user_id, ok := claim["user_id"]
-
-	if !ok {
-		hlog.DefaultLogger().Info("user id not exist in jwt")
-		return 0, *errno.UnauthorizedTokenError
-	}
-
-	uid, ok := user_id.(int64)
-
-	if !ok {
-		hlog.DefaultLogger().Info("user id assert fail")
-		return 0, *errno.UnauthorizedTokenError
-	}
-
-	return uid, *errno.Success
-}

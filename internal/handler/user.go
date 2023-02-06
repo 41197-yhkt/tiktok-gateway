@@ -2,14 +2,14 @@ package handler
 
 import (
 	"context"
-	"github.com/cloudwego/kitex/client"
-	etcd "github.com/kitex-contrib/registry-etcd"
 	"log"
-	"tiktok-gateway/kitex_gen/relation"
-	"tiktok-gateway/kitex_gen/relation/relationservice"
+	douyin "tiktok-gateway/internal/model"
 	"tiktok-gateway/kitex_gen/user"
 	"tiktok-gateway/kitex_gen/user/userservice"
 	"time"
+
+	"github.com/cloudwego/kitex/client"
+	etcd "github.com/kitex-contrib/registry-etcd"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"

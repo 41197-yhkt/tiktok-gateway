@@ -26,13 +26,13 @@ func customizedRegister(r *server.Hertz) {
 
 	// TODO:为了测试方便，还没上jwt
 	// auth2 := group.Group("/publish",middleware.JwtMiddleware.MiddlewareFunc())
-	// auth3 := group.Group("/favourite",middleware.JwtMiddleware.MiddlewareFunc())
+	auth3 := group.Group("/favourite",middleware.JwtMiddleware.MiddlewareFunc())
 	// auth4 := group.Group("/comment",middleware.JwtMiddleware.MiddlewareFunc())
-
-	group.POST("/publish/action", handler.DouyinPublishActionMethod)
-	group.GET("/publish/list", handler.DouyinPublishListMethod)
-	group.POST("/favorite/action", handler.DouyinFavoriteActionMethod)
-	group.GET("/favorite/list", handler.DouyinFavoriteListMethod)
+	
+	//group.POST("/publish/action", handler.DouyinPublishActionMethod)
+	//group.GET("/publish/list", handler.DouyinPublishListMethod)
+	auth3.POST("/action", handler.DouyinFavoriteActionMethodTest)
+	auth3.GET("/list", handler.DouyinFavoriteListMethod)
 	group.POST("/comment/action", handler.DouyinCommentActionMethod)
 	group.GET("/comment/list", handler.DouyinCommentListMethod)
 

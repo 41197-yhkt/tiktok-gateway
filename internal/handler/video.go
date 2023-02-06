@@ -18,23 +18,19 @@ func DouyinPublishActionMethod(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := new(douyin.DouyinPublishActionResponse)
-
-	c.JSON(consts.StatusOK, resp)
 }
 
 // DouyinPublishListMethod .
 // @router /relation/publish/list [GET]
 func DouyinPublishListMethod(ctx context.Context, c *app.RequestContext) {
-	var err error
-	var req douyin.DouyinPublishListRequest
-	err = c.BindAndValidate(&req)
-	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
-		return
-	}
+	// var err error
+	// var req douyin.DouyinPublishListRequest
+	// err = c.BindAndValidate(&req)
+	// if err != nil {
+	// 	c.String(consts.StatusBadRequest, err.Error())
+	// 	return
+	// }
 
-	resp := new(douyin.DouyinPublishListResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	// c.JSON(consts.StatusOK, resp)
 }
+

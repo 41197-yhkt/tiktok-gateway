@@ -1,19 +1,19 @@
 package rpc
 
-import (
+//import (
 	//"tiktok/kitex_gen/composite/compositeservice"
 	// "time"
 
-	// "pkg/constants"
-	// "github.com/cloudwego/kitex/client"
-	// "github.com/cloudwego/kitex/pkg/retry"
-	// etcd "github.com/kitex-contrib/registry-etcd"
-	// trace "github.com/kitex-contrib/tracer-opentracing"
-)
+// 	// "pkg/constants"
+// 	// "github.com/cloudwego/kitex/client"
+// 	// "github.com/cloudwego/kitex/pkg/retry"
+// 	// etcd "github.com/kitex-contrib/registry-etcd"
+// 	// trace "github.com/kitex-contrib/tracer-opentracing"
+// )
 
-//var videoClient compositeservice.Client
+// var videoClient compositeservice.Client
 
-func initVideoRPC(){
+// func initVideoRPC(){
 	// r, err := etcd.NewEtcdResolver([]string{constants.EtcdAddress})
 	// if err != nil {
 	// 	panic(err)
@@ -35,4 +35,4 @@ func initVideoRPC(){
 	// 	// panic(err)
 	// }
 	// videoClient = c
-}
+//}
