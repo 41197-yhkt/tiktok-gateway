@@ -6,8 +6,8 @@ import (
 	"tiktok-gateway/kitex_gen/composite/compositeservice"
 	"time"
 
-	"pkg/constants"
-	"pkg/errno"
+	"github.com/41197-yhkt/pkg/constants"
+	"github.com/41197-yhkt/pkg/errno"
 
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/retry"
@@ -17,7 +17,7 @@ import (
 
 var compClient compositeservice.Client
 
-func initCompRPC(){
+func initCompRPC() {
 	r, err := etcd.NewEtcdResolver([]string{constants.EtcdAddress})
 	if err != nil {
 		panic(err)
@@ -40,26 +40,26 @@ func initCompRPC(){
 	compClient = c
 }
 
-func FavoriteAction(ctx context.Context, req *composite.BasicFavoriteActionRequest) errno.ErrNo{
-	resp, err:= compClient.BasicFavoriteActionMethod(ctx, req)
+func FavoriteAction(ctx context.Context, req *composite.BasicFavoriteActionRequest) errno.ErrNo {
+	resp, err := compClient.BasicFavoriteActionMethod(ctx, req)
 
-	if err != nil{
+	if err != nil {
 		return *errno.ErrorCallFall
 	}
-	if resp.BaseResp.StatusCode != 0{
+	if resp.BaseResp.StatusCode != 0 {
 		errInt := int(resp.BaseResp.StatusCode)
 		return *errno.NewErrNo(errInt, errno.Codes[errInt])
 	}
 	return *errno.Success
 }
 
-func FavoriteList(ctx context.Context, req *composite.BasicFavoriteListRequest) ( errno.ErrNo, []*composite.Vedio){
-	resp, err:= compClient.BasicFavoriteListMethod(ctx, req)
+func FavoriteList(ctx context.Context, req *composite.BasicFavoriteListRequest) (errno.ErrNo, []*composite.Vedio) {
+	resp, err := compClient.BasicFavoriteListMethod(ctx, req)
 
-	if err != nil{
+	if err != nil {
 		return *errno.ErrorCallFall, nil
 	}
-	if resp.BaseResp.StatusCode != 0{
+	if resp.BaseResp.StatusCode != 0 {
 		errInt := int(resp.BaseResp.StatusCode)
 		return *errno.NewErrNo(errInt, errno.Codes[errInt]), nil
 	}
@@ -67,13 +67,13 @@ func FavoriteList(ctx context.Context, req *composite.BasicFavoriteListRequest) 
 	return *errno.Success, resp.VedioList
 }
 
-func FeedMethod(ctx context.Context, req *composite.BasicFeedRequest)( errno.ErrNo,[]*composite.Vedio, *int64){
-	resp, err:= compClient.BasicFeedMethod(ctx, req)
+func FeedMethod(ctx context.Context, req *composite.BasicFeedRequest) (errno.ErrNo, []*composite.Vedio, *int64) {
+	resp, err := compClient.BasicFeedMethod(ctx, req)
 
-	if err != nil{
+	if err != nil {
 		return *errno.ErrorCallFall, nil, nil
 	}
-	if resp.BaseResp.StatusCode != 0{
+	if resp.BaseResp.StatusCode != 0 {
 		errInt := int(resp.BaseResp.StatusCode)
 		return *errno.NewErrNo(errInt, errno.Codes[errInt]), nil, nil
 	}
@@ -81,26 +81,26 @@ func FeedMethod(ctx context.Context, req *composite.BasicFeedRequest)( errno.Err
 	return *errno.Success, resp.VedioList, resp.NextTime
 }
 
-func CommentAction(ctx context.Context, req *composite.BasicCommentActionRequest) errno.ErrNo{
-	resp, err:= compClient.BasicCommentActionMethod(ctx, req)
+func CommentAction(ctx context.Context, req *composite.BasicCommentActionRequest) errno.ErrNo {
+	resp, err := compClient.BasicCommentActionMethod(ctx, req)
 
-	if err != nil{
+	if err != nil {
 		return *errno.ErrorCallFall
 	}
-	if resp.BaseResp.StatusCode != 0{
+	if resp.BaseResp.StatusCode != 0 {
 		errInt := int(resp.BaseResp.StatusCode)
 		return *errno.NewErrNo(errInt, errno.Codes[errInt])
 	}
 	return *errno.Success
 }
 
-func CommentList(ctx context.Context, req *composite.BasicCommentListRequest) (errno.ErrNo, []*composite.Comment){
-	resp, err:= compClient.BasicCommentListMethod(ctx, req)
+func CommentList(ctx context.Context, req *composite.BasicCommentListRequest) (errno.ErrNo, []*composite.Comment) {
+	resp, err := compClient.BasicCommentListMethod(ctx, req)
 
-	if err != nil{
+	if err != nil {
 		return *errno.ErrorCallFall, nil
 	}
-	if resp.BaseResp.StatusCode != 0{
+	if resp.BaseResp.StatusCode != 0 {
 		errInt := int(resp.BaseResp.StatusCode)
 		return *errno.NewErrNo(errInt, errno.Codes[errInt]), nil
 	}

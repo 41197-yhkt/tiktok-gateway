@@ -2,8 +2,8 @@ package handler
 
 import (
 	"context"
+	"github.com/41197-yhkt/pkg/errno"
 	"net/http"
-	"pkg/errno"
 	douyin "tiktok-gateway/internal/model"
 	"tiktok-gateway/internal/rpc"
 	"tiktok-gateway/kitex_gen/composite"

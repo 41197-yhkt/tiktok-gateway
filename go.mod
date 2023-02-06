@@ -3,6 +3,7 @@ module tiktok-gateway
 go 1.17
 
 require (
+	github.com/41197-yhkt/pkg v0.0.0-20230204134136-dd1dd3312a13
 	github.com/apache/thrift v0.17.0
 	github.com/cloudwego/hertz v0.5.1
 )
@@ -24,7 +25,7 @@ require (
 	go.etcd.io/etcd/api/v3 v3.5.5 // indirect
 	go.etcd.io/etcd/client/pkg/v3 v3.5.5 // indirect
 	go.etcd.io/etcd/client/v3 v3.5.5 // indirect
-	go.uber.org/atomic v1.8.0 // indirect
+	go.uber.org/atomic v1.10.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	go.uber.org/zap v1.17.0 // indirect
 	golang.org/x/net v0.0.0-20211112202133-69e39bad7dc2 // indirect
