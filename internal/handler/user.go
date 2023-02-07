@@ -3,7 +3,8 @@ package handler
 import (
 	"context"
 	"log"
-	douyin "tiktok-gateway/internal/model"
+	"tiktok-gateway/kitex_gen/relation"
+	"tiktok-gateway/kitex_gen/relation/relationservice"
 	"tiktok-gateway/kitex_gen/user"
 	"tiktok-gateway/kitex_gen/user/userservice"
 	"time"
@@ -20,7 +21,7 @@ import (
 func DouyinUserRegisterMethod(ctx context.Context, c *app.RequestContext) {
 	return
 	var err error
-	var req user.DouyinUserRegisterRequest
+	var req user.UserRegisterRequest
 	err = c.BindAndValidate(&req)
 	log.Print(req)
 	if err != nil {
@@ -37,7 +38,7 @@ func DouyinUserRegisterMethod(ctx context.Context, c *app.RequestContext) {
 		log.Fatal(err)
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
-	_, err = client.DouyinUserRegisterMethod(ctx, &req)
+	_, err = client.UserRegister(ctx, &req)
 	cancel()
 	if err != nil {
 		log.Fatal(err)
@@ -47,12 +48,12 @@ func DouyinUserRegisterMethod(ctx context.Context, c *app.RequestContext) {
 // DouyinUserLoginMethod .
 // @router /relation/user/login [POST]
 func DouyinUserLoginMethod(ctx context.Context, c *app.RequestContext) (interface{}, error) {
-	return &user.DouyinUserLoginResponse{
+	return &user.UserLoginResponse{
 		BaseResp: nil,
 		UserId:   1,
 	}, nil
 	var err error
-	var req user.DouyinUserLoginRequest
+	var req user.UserLoginRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		return nil, err
@@ -67,7 +68,7 @@ func DouyinUserLoginMethod(ctx context.Context, c *app.RequestContext) (interfac
 		return nil, err
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
-	resp, err := client.DouyinUserLoginMethod(ctx, &req)
+	resp, err := client.UserLogin(ctx, &req)
 	cancel()
 	if err != nil {
 		return nil, err
@@ -80,7 +81,7 @@ func DouyinUserLoginMethod(ctx context.Context, c *app.RequestContext) (interfac
 // @router /relation/user [GET]
 func DouyinUserMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req user.DouyinUserRequest
+	var req user.UserInfoRequest
 	err = c.BindAndValidate(&req)
 	log.Print(req)
 	if err != nil {
@@ -97,7 +98,7 @@ func DouyinUserMethod(ctx context.Context, c *app.RequestContext) {
 		log.Fatal(err)
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
-	resp, err := client.DouyinUserMethod(ctx, &req)
+	resp, err := client.UserInfo(ctx, &req)
 	cancel()
 	if err != nil {
 		log.Fatal(err)
