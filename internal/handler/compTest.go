@@ -1,3 +1,4 @@
+// test
 package handler
 
 import (
@@ -9,6 +10,7 @@ import (
 
 	//"github.com/41197-yhkt/pkg/constants"
 	"github.com/41197-yhkt/pkg/errno"
+	//"github.com/hertz-contrib/jwt"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
@@ -28,7 +30,7 @@ func testDouyinFeedMethod(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	uid, _ := getUserIdFromJWT(ctx, c)
+	uid:= getUserIdFromJWT(ctx, c)
 
 	errNo, videosRPC, nextTime := rpc.FeedMethod(ctx, &composite.BasicFeedRequest{
 		UserId:      uid,
@@ -85,11 +87,12 @@ func DouyinFavoriteActionMethodTest(ctx context.Context, c *app.RequestContext) 
 	}
 
 	// 获取uid
-	uid, errNo := getUserIdFromJWT(ctx, c)
-	if errNo != *errno.Success {
-		SendResponse(c, errNo)
-		return
-	}
+	// uid, errNo := getUserIdFromJWT(ctx, c)
+	// if errNo != *errno.Success {
+	// 	SendResponse(c, errNo)
+	// 	return
+	// }
+	uid:= getUserIdFromJWT(ctx, c)
 	hlog.DefaultLogger().Info("user_id=", uid)
 
 	// RPC调用返回true
@@ -99,7 +102,7 @@ func DouyinFavoriteActionMethodTest(ctx context.Context, c *app.RequestContext) 
 	// 	UserId:     uid,
 	// })
 
-	errNo = *errno.Success
+	errNo := *errno.Success
 
 	if errNo != *errno.Success {
 		SendResponse(c, errNo)
@@ -173,14 +176,9 @@ func testDouyinCommentActionMethod(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-	uid, errNo := getUserIdFromJWT(ctx, c)
+	uid:= getUserIdFromJWT(ctx, c)
 
-	if errNo != *errno.Success {
-		SendResponse(c, errNo)
-		return
-	}
-
-	errNo = rpc.CommentAction(context.Background(), &composite.BasicCommentActionRequest{
+	errNo := rpc.CommentAction(context.Background(), &composite.BasicCommentActionRequest{
 		VedioId:     req.VedioID,
 		UserId:      uid,
 		ActionType:  req.ActionType,

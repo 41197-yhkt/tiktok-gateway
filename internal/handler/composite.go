@@ -1,9 +1,10 @@
+// 原本
 package handler
 
 import (
 	"context"
-	"github.com/41197-yhkt/pkg/errno"
 	"net/http"
+	"github.com/41197-yhkt/pkg/errno"
 	douyin "tiktok-gateway/internal/model"
 	"tiktok-gateway/internal/rpc"
 	"tiktok-gateway/kitex_gen/composite"
@@ -27,7 +28,7 @@ func DouyinFeedMethod(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	uid, _ := getUserIdFromJWT(ctx, c)
+	uid:= getUserIdFromJWT(ctx, c)
 
 	errNo, videosRPC, nextTime := rpc.FeedMethod(ctx, &composite.BasicFeedRequest{
 		UserId:      uid,
@@ -85,14 +86,10 @@ func DouyinFavoriteActionMethod(ctx context.Context, c *app.RequestContext) {
 	}
 
 	// 获取uid
-	uid, errNo := getUserIdFromJWT(ctx, c)
-	if errNo != *errno.Success {
-		SendResponse(c, errNo)
-		return
-	}
+	uid:= getUserIdFromJWT(ctx, c)
 	hlog.DefaultLogger().Info("user_id=", uid)
 
-	errNo = rpc.FavoriteAction(context.Background(), &composite.BasicFavoriteActionRequest{
+	errNo := rpc.FavoriteAction(context.Background(), &composite.BasicFavoriteActionRequest{
 		VedioId:    req.VedioID,
 		ActionType: req.ActionType,
 		UserId:     uid,
@@ -169,14 +166,9 @@ func DouyinCommentActionMethod(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-	uid, errNo := getUserIdFromJWT(ctx, c)
+	uid:= getUserIdFromJWT(ctx, c)
 
-	if err != *errno.Success {
-		SendResponse(c, errNo)
-		return
-	}
-
-	errNo = rpc.CommentAction(context.Background(), &composite.BasicCommentActionRequest{
+	errNo := rpc.CommentAction(context.Background(), &composite.BasicCommentActionRequest{
 		VedioId:     req.VedioID,
 		UserId:      uid,
 		ActionType:  req.ActionType,
@@ -246,22 +238,8 @@ func DouyinCommentListMethod(ctx context.Context, c *app.RequestContext) {
 	c.JSON(consts.StatusOK, resp)
 }
 
-func getUserIdFromJWT(ctx context.Context, c *app.RequestContext) (int64, errno.ErrNo) {
+func getUserIdFromJWT(ctx context.Context, c *app.RequestContext) int64 {
 	claim := jwt.ExtractClaims(ctx, c)
-
-	user_id, ok := claim["user_id"]
-
-	if !ok {
-		hlog.DefaultLogger().Info("user id not exist in jwt")
-		return 0, *errno.UnauthorizedTokenError
-	}
-
-	uid, ok := user_id.(int64)
-
-	if !ok {
-		hlog.DefaultLogger().Info("user id assert fail")
-		return 0, *errno.UnauthorizedTokenError
-	}
-
-	return uid, *errno.Success
+	uid := int64(claim["identity"].(float64))
+	return uid
 }
