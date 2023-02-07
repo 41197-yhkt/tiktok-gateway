@@ -36,7 +36,7 @@ func DouyinFeedMethod(ctx context.Context, c *app.RequestContext) {
 	})
 
 	if errNo != *errno.Success {
-		//TODO: 修复sendResponse
+		SendResponse(c, errNo)
 		return
 	}
 
@@ -168,7 +168,7 @@ func DouyinCommentActionMethod(ctx context.Context, c *app.RequestContext) {
 	}
 	uid:= getUserIdFromJWT(ctx, c)
 
-	errNo := rpc.CommentAction(context.Background(), &composite.BasicCommentActionRequest{
+	errNo, rpcResp := rpc.CommentAction(context.Background(), &composite.BasicCommentActionRequest{
 		VedioId:     req.VedioID,
 		UserId:      uid,
 		ActionType:  req.ActionType,
@@ -188,7 +188,14 @@ func DouyinCommentActionMethod(ctx context.Context, c *app.RequestContext) {
 		Comment: &douyin.Comment{
 			ID: uid,
 			Content: *req.CommentText,
-			
+			User: &douyin.User{
+				ID: rpcResp.Comment.Id,
+				Name: rpcResp.Comment.User.Name,
+				FollowCount: rpcResp.Comment.User.FollowCount,
+				FollowerCount: rpcResp.Comment.User.FollowerCount,
+				IsFollow: rpcResp.Comment.User.IsFollow,
+			},
+			CreateDate: *rpcResp.BaseResp.StatusMsg,
 		},
 	}
 

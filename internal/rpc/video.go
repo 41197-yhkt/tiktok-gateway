@@ -1,8 +1,8 @@
 package rpc
 
-// import (
-// 	"tiktok/kitex_gen/composite/compositeservice"
-// 	// "time"
+//import (
+	//"tiktok/kitex_gen/composite/compositeservice"
+	// "time"
 
 // 	// "pkg/constants"
 // 	// "github.com/cloudwego/kitex/client"

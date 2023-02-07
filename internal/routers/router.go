@@ -24,16 +24,15 @@ func customizedRegister(r *server.Hertz) {
 	// feed不需jwt
 	group.GET("/feed", handler.DouyinFeedMethod)
 
-	// TODO:为了测试方便，还没上jwt
-	// auth2 := group.Group("/publish",middleware.JwtMiddleware.MiddlewareFunc())
+	auth2 := group.Group("/publish",middleware.JwtMiddleware.MiddlewareFunc())
 	auth3 := group.Group("/favourite",middleware.JwtMiddleware.MiddlewareFunc())
-	// auth4 := group.Group("/comment",middleware.JwtMiddleware.MiddlewareFunc())
+	auth4 := group.Group("/comment",middleware.JwtMiddleware.MiddlewareFunc())
 	
-	//group.POST("/publish/action", handler.DouyinPublishActionMethod)
-	//group.GET("/publish/list", handler.DouyinPublishListMethod)
-	auth3.POST("/action", handler.DouyinFavoriteActionMethodTest)
+	auth2.POST("/publish/action", handler.DouyinPublishActionMethod)
+	auth2.GET("/publish/list", handler.DouyinPublishListMethod)
+	auth3.POST("/action", handler.DouyinFavoriteActionMethod)
 	auth3.GET("/list", handler.DouyinFavoriteListMethod)
-	group.POST("/comment/action", handler.DouyinCommentActionMethod)
-	group.GET("/comment/list", handler.DouyinCommentListMethod)
-	
+	auth4.POST("/action", handler.DouyinCommentActionMethod)
+	auth4.GET("/list", handler.DouyinCommentListMethod)
+
 }

@@ -80,17 +80,17 @@ func FeedMethod(ctx context.Context, req *composite.BasicFeedRequest) (errno.Err
 	return *errno.Success, resp.VedioList, resp.NextTime
 }
 
-func CommentAction(ctx context.Context, req *composite.BasicCommentActionRequest) errno.ErrNo {
+func CommentAction(ctx context.Context, req *composite.BasicCommentActionRequest) (errno.ErrNo, *composite.BasicCommentActionResponse) {
 	resp, err := compClient.BasicCommentActionMethod(ctx, req)
 
 	if err != nil{
-		return *errno.ServerError
+		return *errno.ServerError,nil
 	}
 	if resp.BaseResp.StatusCode != 0 {
 		errInt := int(resp.BaseResp.StatusCode)
-		return *errno.NewErrNo(errInt, *resp.BaseResp.StatusMsg)
+		return *errno.NewErrNo(errInt, *resp.BaseResp.StatusMsg), nil
 	}
-	return *errno.Success
+	return *errno.Success, resp
 }
 
 func CommentList(ctx context.Context, req *composite.BasicCommentListRequest) (errno.ErrNo, []*composite.Comment) {

@@ -168,35 +168,6 @@ func testDouyinFavoriteListMethod(ctx context.Context, c *app.RequestContext) {
 }
 
 
-func testDouyinCommentActionMethod(ctx context.Context, c *app.RequestContext) {
-	var err error
-	var req douyin.DouyinCommentActionRequest
-	err = c.BindAndValidate(&req)
-	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
-		return
-	}
-	uid:= getUserIdFromJWT(ctx, c)
-
-	errNo := rpc.CommentAction(context.Background(), &composite.BasicCommentActionRequest{
-		VedioId:     req.VedioID,
-		UserId:      uid,
-		ActionType:  req.ActionType,
-		CommentId:   req.CommentID,
-		CommentText: req.CommentText,
-	})
-
-	if err != *errno.Success {
-		SendResponse(c, errNo)
-		return
-	}
-
-	resp := new(douyin.DouyinCommentActionResponse)
-
-	c.JSON(consts.StatusOK, resp)
-}
-
-
 func testDouyinCommentListMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinCommentListRequest

@@ -11,7 +11,7 @@ import (
 )
 
 // DouyinUserRegisterMethod .
-// @router /douyin/user/register [POST]
+// @router /relation/user/register [POST]
 func DouyinUserRegisterMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinUserRegisterRequest
@@ -27,7 +27,7 @@ func DouyinUserRegisterMethod(ctx context.Context, c *app.RequestContext) {
 }
 
 // DouyinUserLoginMethod .
-// @router /douyin/user/login [POST]
+// @router /relation/user/login [POST]
 func DouyinUserLoginMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinUserLoginRequest
@@ -43,7 +43,7 @@ func DouyinUserLoginMethod(ctx context.Context, c *app.RequestContext) {
 }
 
 // DouyinUserMethod .
-// @router /douyin/user [GET]
+// @router /relation/user [GET]
 func DouyinUserMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinUserRequest
@@ -59,7 +59,7 @@ func DouyinUserMethod(ctx context.Context, c *app.RequestContext) {
 }
 
 // DouyinFeedMethod .
-// @router /douyin/feed [GET]
+// @router /relation/feed [GET]
 func DouyinFeedMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinFeedRequest
@@ -75,7 +75,7 @@ func DouyinFeedMethod(ctx context.Context, c *app.RequestContext) {
 }
 
 // DouyinPublishActionMethod .
-// @router /douyin/publish/action [POST]
+// @router /relation/publish/action [POST]
 func DouyinPublishActionMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinPublishActionRequest
@@ -91,7 +91,7 @@ func DouyinPublishActionMethod(ctx context.Context, c *app.RequestContext) {
 }
 
 // DouyinPublishListMethod .
-// @router /douyin/publish/list [GET]
+// @router /relation/publish/list [GET]
 func DouyinPublishListMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinPublishListRequest
@@ -107,7 +107,7 @@ func DouyinPublishListMethod(ctx context.Context, c *app.RequestContext) {
 }
 
 // DouyinFavoriteActionMethod .
-// @router /douyin/favorite/action [POST]
+// @router /relation/favorite/action [POST]
 func DouyinFavoriteActionMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinFavoriteActionRequest
@@ -123,7 +123,7 @@ func DouyinFavoriteActionMethod(ctx context.Context, c *app.RequestContext) {
 }
 
 // DouyinFavoriteListMethod .
-// @router /douyin/favorite/list [GET]
+// @router /relation/favorite/list [GET]
 func DouyinFavoriteListMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinFavoriteListRequest
@@ -139,7 +139,7 @@ func DouyinFavoriteListMethod(ctx context.Context, c *app.RequestContext) {
 }
 
 // DouyinCommentActionMethod .
-// @router /douyin/comment/action [POST]
+// @router /relation/comment/action [POST]
 func DouyinCommentActionMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinCommentActionRequest
@@ -155,7 +155,7 @@ func DouyinCommentActionMethod(ctx context.Context, c *app.RequestContext) {
 }
 
 // DouyinCommentListMethod .
-// @router /douyin/comment/list [GET]
+// @router /relation/comment/list [GET]
 func DouyinCommentListMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinCommentListRequest
@@ -171,7 +171,7 @@ func DouyinCommentListMethod(ctx context.Context, c *app.RequestContext) {
 }
 
 // DouyinRelationActionMethod .
-// @router /douyin/relation/action [POST]
+// @router /relation/relation/action [POST]
 func DouyinRelationActionMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinRelationActionRequest
@@ -187,7 +187,7 @@ func DouyinRelationActionMethod(ctx context.Context, c *app.RequestContext) {
 }
 
 // DouyinRelationFollowListMethod .
-// @router /douyin/relation/follow/list [GET]
+// @router /relation/relation/follow/list [GET]
 func DouyinRelationFollowListMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinRelationFollowListRequest
@@ -203,7 +203,7 @@ func DouyinRelationFollowListMethod(ctx context.Context, c *app.RequestContext) 
 }
 
 // DouyinRelationFollowerListMethod .
-// @router /douyin/relation/follower/list [GET]
+// @router /relation/relation/follower/list [GET]
 func DouyinRelationFollowerListMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinRelationFollowerListRequest
@@ -219,7 +219,7 @@ func DouyinRelationFollowerListMethod(ctx context.Context, c *app.RequestContext
 }
 
 // DouyinRelationFriendListMethod .
-// @router /douyin/relation/friend/list [GET]
+// @router /relation/relation/friend/list [GET]
 func DouyinRelationFriendListMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req douyin.DouyinRelationFriendListRequest

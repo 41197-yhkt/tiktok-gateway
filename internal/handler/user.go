@@ -16,10 +16,11 @@ import (
 )
 
 // DouyinUserRegisterMethod .
-// @router /douyin/user/register [POST]
+// @router /relation/user/register [POST]
 func DouyinUserRegisterMethod(ctx context.Context, c *app.RequestContext) {
+	return
 	var err error
-	var req user.UserRegisterRequest
+	var req user.DouyinUserRegisterRequest
 	err = c.BindAndValidate(&req)
 	log.Print(req)
 	if err != nil {
@@ -36,24 +37,22 @@ func DouyinUserRegisterMethod(ctx context.Context, c *app.RequestContext) {
 		log.Fatal(err)
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
-	resp, err := client.UserRegister(ctx, &req)
+	_, err = client.DouyinUserRegisterMethod(ctx, &req)
 	cancel()
 	if err != nil {
 		log.Fatal(err)
 	}
-	c.JSON(consts.StatusOK, resp)
 }
-// 
+
 // DouyinUserLoginMethod .
-// @router /douyin/user/login [POST]
+// @router /relation/user/login [POST]
 func DouyinUserLoginMethod(ctx context.Context, c *app.RequestContext) (interface{}, error) {
-	return &user.UserLoginResponse{
+	return &user.DouyinUserLoginResponse{
 		BaseResp: nil,
-		UserId:1,
-	},nil
-	
+		UserId:   1,
+	}, nil
 	var err error
-	var req user.UserLoginRequest
+	var req user.DouyinUserLoginRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		return nil, err
@@ -68,7 +67,7 @@ func DouyinUserLoginMethod(ctx context.Context, c *app.RequestContext) (interfac
 		return nil, err
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
-	resp, err := client.UserLogin(ctx, &req)
+	resp, err := client.DouyinUserLoginMethod(ctx, &req)
 	cancel()
 	if err != nil {
 		return nil, err
@@ -78,10 +77,10 @@ func DouyinUserLoginMethod(ctx context.Context, c *app.RequestContext) (interfac
 }
 
 // DouyinUserMethod .
-// @router /douyin/user [GET]
+// @router /relation/user [GET]
 func DouyinUserMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req user.UserInfoRequest
+	var req user.DouyinUserRequest
 	err = c.BindAndValidate(&req)
 	log.Print(req)
 	if err != nil {
@@ -98,7 +97,7 @@ func DouyinUserMethod(ctx context.Context, c *app.RequestContext) {
 		log.Fatal(err)
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
-	resp, err := client.UserInfo(ctx, &req)
+	resp, err := client.DouyinUserMethod(ctx, &req)
 	cancel()
 	if err != nil {
 		log.Fatal(err)
@@ -107,65 +106,109 @@ func DouyinUserMethod(ctx context.Context, c *app.RequestContext) {
 }
 
 // DouyinRelationActionMethod .
-// @router /douyin/relation/action [POST]
+// @router /relation/relation/action [POST]
 func DouyinRelationActionMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req douyin.DouyinRelationActionRequest
+	var req relation.DouyinRelationActionRequest
 	err = c.BindAndValidate(&req)
+	log.Print(req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
-		return
+		log.Fatal("Bind ERROR")
 	}
-
-	resp := new(douyin.DouyinRelationActionResponse)
-
+	r, err := etcd.NewEtcdResolver([]string{"127.0.0.1:2379"})
+	if err != nil {
+		log.Fatal(err)
+	}
+	client, err := relationservice.NewClient("relation", client.WithResolver(r))
+	if err != nil {
+		log.Fatal(err)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
+	resp, err := client.DouyinRelationActionMethod(ctx, &req)
+	cancel()
+	if err != nil {
+		log.Fatal(err)
+	}
 	c.JSON(consts.StatusOK, resp)
 }
 
 // DouyinRelationFollowListMethod .
-// @router /douyin/relation/follow/list [GET]
+// @router /relation/relation/follow/list [GET]
 func DouyinRelationFollowListMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req douyin.DouyinRelationFollowListRequest
+	var req relation.DouyinRelationFollowerListRequest
 	err = c.BindAndValidate(&req)
+	log.Print(req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
-		return
+		log.Fatal("Bind ERROR")
 	}
-
-	resp := new(douyin.DouyinRelationFollowListResponse)
-
+	r, err := etcd.NewEtcdResolver([]string{"127.0.0.1:2379"})
+	if err != nil {
+		log.Fatal(err)
+	}
+	client, err := relationservice.NewClient("relation", client.WithResolver(r))
+	if err != nil {
+		log.Fatal(err)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
+	resp, err := client.DouyinRelationFollowerListMethod(ctx, &req)
+	cancel()
+	if err != nil {
+		log.Fatal(err)
+	}
 	c.JSON(consts.StatusOK, resp)
 }
 
 // DouyinRelationFollowerListMethod .
-// @router /douyin/relation/follower/list [GET]
+// @router /relation/relation/follower/list [GET]
 func DouyinRelationFollowerListMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req douyin.DouyinRelationFollowerListRequest
+	var req relation.DouyinRelationFollowerListRequest
 	err = c.BindAndValidate(&req)
+	log.Print(req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
-		return
+		log.Fatal("Bind ERROR")
 	}
-
-	resp := new(douyin.DouyinRelationFollowerListResponse)
-
+	r, err := etcd.NewEtcdResolver([]string{"127.0.0.1:2379"})
+	if err != nil {
+		log.Fatal(err)
+	}
+	client, err := relationservice.NewClient("relation", client.WithResolver(r))
+	if err != nil {
+		log.Fatal(err)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
+	resp, err := client.DouyinRelationFollowerListMethod(ctx, &req)
+	cancel()
+	if err != nil {
+		log.Fatal(err)
+	}
 	c.JSON(consts.StatusOK, resp)
 }
 
 // DouyinRelationFriendListMethod .
-// @router /douyin/relation/friend/list [GET]
+// @router /relation/relation/friend/list [GET]
 func DouyinRelationFriendListMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req douyin.DouyinRelationFriendListRequest
+	var req relation.DouyinRelationFriendListRequest
 	err = c.BindAndValidate(&req)
+	log.Print(req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
-		return
+		log.Fatal("Bind ERROR")
 	}
-
-	resp := new(douyin.DouyinRelationFriendListResponse)
-
+	r, err := etcd.NewEtcdResolver([]string{"127.0.0.1:2379"})
+	if err != nil {
+		log.Fatal(err)
+	}
+	client, err := relationservice.NewClient("relation", client.WithResolver(r))
+	if err != nil {
+		log.Fatal(err)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
+	resp, err := client.DouyinRelationFriendListMethod(ctx, &req)
+	cancel()
+	if err != nil {
+		log.Fatal(err)
+	}
 	c.JSON(consts.StatusOK, resp)
 }
