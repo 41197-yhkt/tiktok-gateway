@@ -28,6 +28,8 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"GetFollowerList": kitex.NewMethodInfo(getFollowerListHandler, newUserServiceGetFollowerListArgs, newUserServiceGetFollowerListResult, false),
 		"GetFriendList":   kitex.NewMethodInfo(getFriendListHandler, newUserServiceGetFriendListArgs, newUserServiceGetFriendListResult, false),
 		"IsFriend":        kitex.NewMethodInfo(isFriendHandler, newUserServiceIsFriendArgs, newUserServiceIsFriendResult, false),
+		"CompGetUser":     kitex.NewMethodInfo(compGetUserHandler, newUserServiceCompGetUserArgs, newUserServiceCompGetUserResult, false),
+		"CompMGetUser":    kitex.NewMethodInfo(compMGetUserHandler, newUserServiceCompMGetUserArgs, newUserServiceCompMGetUserResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "user",
@@ -205,6 +207,42 @@ func newUserServiceIsFriendResult() interface{} {
 	return user.NewUserServiceIsFriendResult()
 }
 
+func compGetUserHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserServiceCompGetUserArgs)
+	realResult := result.(*user.UserServiceCompGetUserResult)
+	success, err := handler.(user.UserService).CompGetUser(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newUserServiceCompGetUserArgs() interface{} {
+	return user.NewUserServiceCompGetUserArgs()
+}
+
+func newUserServiceCompGetUserResult() interface{} {
+	return user.NewUserServiceCompGetUserResult()
+}
+
+func compMGetUserHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserServiceCompMGetUserArgs)
+	realResult := result.(*user.UserServiceCompMGetUserResult)
+	success, err := handler.(user.UserService).CompMGetUser(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newUserServiceCompMGetUserArgs() interface{} {
+	return user.NewUserServiceCompMGetUserArgs()
+}
+
+func newUserServiceCompMGetUserResult() interface{} {
+	return user.NewUserServiceCompMGetUserResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -300,6 +338,26 @@ func (p *kClient) IsFriend(ctx context.Context, req *user.IsFriendRequest) (r *u
 	_args.Req = req
 	var _result user.UserServiceIsFriendResult
 	if err = p.c.Call(ctx, "IsFriend", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) CompGetUser(ctx context.Context, req *user.CompGetUserRequest) (r *user.CompGetUserResponse, err error) {
+	var _args user.UserServiceCompGetUserArgs
+	_args.Req = req
+	var _result user.UserServiceCompGetUserResult
+	if err = p.c.Call(ctx, "CompGetUser", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) CompMGetUser(ctx context.Context, req *user.CompMGetUserRequest) (r *user.CompMGetUserResponse, err error) {
+	var _args user.UserServiceCompMGetUserArgs
+	_args.Req = req
+	var _result user.UserServiceCompMGetUserResult
+	if err = p.c.Call(ctx, "CompMGetUser", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
