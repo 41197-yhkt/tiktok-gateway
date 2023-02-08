@@ -2,12 +2,13 @@ package handler
 
 import (
 	"context"
+	"log"
+	"tiktok-gateway/kitex_gen/video"
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 	"github.com/cloudwego/kitex/client"
 	etcd "github.com/kitex-contrib/registry-etcd"
-	"log"
-	"tiktok-gateway/kitex_gen/video"
 
 	"tiktok-gateway/kitex_gen/video/douyinservice"
 	"time"
@@ -29,7 +30,7 @@ func DouyinPublishActionMethod(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	client, err := douyinservice.NewClient("vedio", client.WithResolver(r))
+	client, err := douyinservice.NewClient("video", client.WithResolver(r))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -59,7 +60,7 @@ func DouyinPublishListMethod(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	client, err := douyinservice.NewClient("vedio", client.WithResolver(r))
+	client, err := douyinservice.NewClient("video", client.WithResolver(r))
 	if err != nil {
 		log.Fatal(err)
 	}

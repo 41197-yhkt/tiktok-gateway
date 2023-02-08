@@ -3,12 +3,15 @@
 package main
 
 import (
-	"github.com/cloudwego/hertz/pkg/app/server"
 	"tiktok-gateway/internal/middleware"
 	routers "tiktok-gateway/internal/routers"
+	"tiktok-gateway/internal/rpc"
+
+	"github.com/cloudwego/hertz/pkg/app/server"
 )
 
 func main() {
+	rpc.InitRPC()
 	middleware.InitJwt()
 	h := server.Default()
 	routers.Register(h)

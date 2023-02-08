@@ -30,7 +30,7 @@ func testDouyinFeedMethod(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	uid:= getUserIdFromJWT(ctx, c)
+	uid := getUserIdFromJWT(ctx, c)
 
 	errNo, videosRPC, nextTime := rpc.FeedMethod(ctx, &composite.BasicFeedRequest{
 		UserId:      uid,
@@ -43,10 +43,10 @@ func testDouyinFeedMethod(ctx context.Context, c *app.RequestContext) {
 	}
 
 	// 烦人的类型转换
-	var videosHTTP []*douyin.Vedio
+	var videosHTTP []*douyin.Video
 
 	for _, v := range videosRPC {
-		videoHttp := douyin.Vedio{
+		videoHttp := douyin.Video{
 			ID: v.Id,
 			Author: &douyin.User{
 				FollowerCount: v.Author.FollowerCount,
@@ -66,7 +66,7 @@ func testDouyinFeedMethod(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp := douyin.DouyinFeedResponse{
-		VedioList: videosHTTP,
+		VideoList: videosHTTP,
 		NextTime:  nextTime,
 		BaseResp: &douyin.BaseResp{
 			StatusCode: 0,
@@ -75,7 +75,6 @@ func testDouyinFeedMethod(ctx context.Context, c *app.RequestContext) {
 
 	c.JSON(consts.StatusOK, resp)
 }
-
 
 func DouyinFavoriteActionMethodTest(ctx context.Context, c *app.RequestContext) {
 	var err error
@@ -92,12 +91,12 @@ func DouyinFavoriteActionMethodTest(ctx context.Context, c *app.RequestContext) 
 	// 	SendResponse(c, errNo)
 	// 	return
 	// }
-	uid:= getUserIdFromJWT(ctx, c)
+	uid := getUserIdFromJWT(ctx, c)
 	hlog.DefaultLogger().Info("user_id=", uid)
 
 	// RPC调用返回true
 	// errNo = rpc.FavoriteAction(context.Background(), &composite.BasicFavoriteActionRequest{
-	// 	VedioId:    req.VedioID,
+	// 	VideoId:    req.VideoID,
 	// 	ActionType: req.ActionType,
 	// 	UserId:     uid,
 	// })
@@ -111,7 +110,6 @@ func DouyinFavoriteActionMethodTest(ctx context.Context, c *app.RequestContext) 
 
 	SendResponse(c, errNo)
 }
-
 
 func testDouyinFavoriteListMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
@@ -133,10 +131,10 @@ func testDouyinFavoriteListMethod(ctx context.Context, c *app.RequestContext) {
 	}
 
 	// 烦人的类型转换
-	var videosHTTP []*douyin.Vedio
+	var videosHTTP []*douyin.Video
 
 	for _, v := range videosRPC {
-		videoHttp := douyin.Vedio{
+		videoHttp := douyin.Video{
 			ID: v.Id,
 			Author: &douyin.User{
 				FollowerCount: v.Author.FollowerCount,
@@ -157,7 +155,7 @@ func testDouyinFavoriteListMethod(ctx context.Context, c *app.RequestContext) {
 
 	msg := "get success"
 	resp := douyin.DouyinFavoriteListResponse{
-		VedioList: videosHTTP,
+		VideoList: videosHTTP,
 		BaseResp: &douyin.BaseResp{
 			StatusCode: 0,
 			StatusMsg:  &msg,
@@ -166,7 +164,6 @@ func testDouyinFavoriteListMethod(ctx context.Context, c *app.RequestContext) {
 
 	c.JSON(http.StatusOK, resp)
 }
-
 
 func testDouyinCommentListMethod(ctx context.Context, c *app.RequestContext) {
 	var err error
@@ -178,7 +175,7 @@ func testDouyinCommentListMethod(ctx context.Context, c *app.RequestContext) {
 	}
 
 	err, commentsRPC := rpc.CommentList(ctx, &composite.BasicCommentListRequest{
-		VedioId: req.VedioID,
+		VideoId: req.VideoID,
 	})
 
 	var commentsHTTP []*douyin.Comment
@@ -208,4 +205,3 @@ func testDouyinCommentListMethod(ctx context.Context, c *app.RequestContext) {
 
 	c.JSON(consts.StatusOK, resp)
 }
-

@@ -4,10 +4,11 @@ package handler
 import (
 	"context"
 	"net/http"
-	"github.com/41197-yhkt/pkg/errno"
 	douyin "tiktok-gateway/internal/model"
 	"tiktok-gateway/internal/rpc"
 	"tiktok-gateway/kitex_gen/composite"
+
+	"github.com/41197-yhkt/pkg/errno"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
@@ -28,7 +29,7 @@ func DouyinFeedMethod(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	uid:= getUserIdFromJWT(ctx, c)
+	uid := getUserIdFromJWT(ctx, c)
 
 	errNo, videosRPC, nextTime := rpc.FeedMethod(ctx, &composite.BasicFeedRequest{
 		UserId:      uid,
@@ -41,10 +42,10 @@ func DouyinFeedMethod(ctx context.Context, c *app.RequestContext) {
 	}
 
 	// 烦人的类型转换
-	var videosHTTP []*douyin.Vedio
+	var videosHTTP []*douyin.Video
 
 	for _, v := range videosRPC {
-		videoHttp := douyin.Vedio{
+		videoHttp := douyin.Video{
 			ID: v.Id,
 			Author: &douyin.User{
 				FollowerCount: v.Author.FollowerCount,
@@ -64,7 +65,7 @@ func DouyinFeedMethod(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp := douyin.DouyinFeedResponse{
-		VedioList: videosHTTP,
+		VideoList: videosHTTP,
 		NextTime:  nextTime,
 		BaseResp: &douyin.BaseResp{
 			StatusCode: 0,
@@ -86,11 +87,11 @@ func DouyinFavoriteActionMethod(ctx context.Context, c *app.RequestContext) {
 	}
 
 	// 获取uid
-	uid:= getUserIdFromJWT(ctx, c)
+	uid := getUserIdFromJWT(ctx, c)
 	hlog.DefaultLogger().Info("user_id=", uid)
 
 	errNo := rpc.FavoriteAction(context.Background(), &composite.BasicFavoriteActionRequest{
-		VedioId:    req.VedioID,
+		VideoId:    req.VideoID,
 		ActionType: req.ActionType,
 		UserId:     uid,
 	})
@@ -124,10 +125,10 @@ func DouyinFavoriteListMethod(ctx context.Context, c *app.RequestContext) {
 	}
 
 	// 烦人的类型转换
-	var videosHTTP []*douyin.Vedio
+	var videosHTTP []*douyin.Video
 
 	for _, v := range videosRPC {
-		videoHttp := douyin.Vedio{
+		videoHttp := douyin.Video{
 			ID: v.Id,
 			Author: &douyin.User{
 				FollowerCount: v.Author.FollowerCount,
@@ -147,7 +148,7 @@ func DouyinFavoriteListMethod(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp := douyin.DouyinFavoriteListResponse{
-		VedioList: videosHTTP,
+		VideoList: videosHTTP,
 		BaseResp: &douyin.BaseResp{
 			StatusCode: 0,
 		},
@@ -166,10 +167,10 @@ func DouyinCommentActionMethod(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-	uid:= getUserIdFromJWT(ctx, c)
+	uid := getUserIdFromJWT(ctx, c)
 
 	errNo, rpcResp := rpc.CommentAction(context.Background(), &composite.BasicCommentActionRequest{
-		VedioId:     req.VedioID,
+		VideoId:     req.VideoID,
 		UserId:      uid,
 		ActionType:  req.ActionType,
 		CommentId:   req.CommentID,
@@ -186,14 +187,14 @@ func DouyinCommentActionMethod(ctx context.Context, c *app.RequestContext) {
 			StatusCode: 0,
 		},
 		Comment: &douyin.Comment{
-			ID: uid,
+			ID:      uid,
 			Content: *req.CommentText,
 			User: &douyin.User{
-				ID: rpcResp.Comment.Id,
-				Name: rpcResp.Comment.User.Name,
-				FollowCount: rpcResp.Comment.User.FollowCount,
+				ID:            rpcResp.Comment.Id,
+				Name:          rpcResp.Comment.User.Name,
+				FollowCount:   rpcResp.Comment.User.FollowCount,
 				FollowerCount: rpcResp.Comment.User.FollowerCount,
-				IsFollow: rpcResp.Comment.User.IsFollow,
+				IsFollow:      rpcResp.Comment.User.IsFollow,
 			},
 			CreateDate: *rpcResp.BaseResp.StatusMsg,
 		},
@@ -212,9 +213,8 @@ func DouyinCommentListMethod(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
 	err, commentsRPC := rpc.CommentList(ctx, &composite.BasicCommentListRequest{
-		VedioId: req.VedioID,
+		VideoId: req.VideoID,
 	})
 
 	var commentsHTTP []*douyin.Comment
