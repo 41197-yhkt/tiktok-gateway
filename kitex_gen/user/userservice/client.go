@@ -20,6 +20,8 @@ type Client interface {
 	GetFollowerList(ctx context.Context, req *user.FollowerListRequest, callOptions ...callopt.Option) (r *user.FollowerListResponse, err error)
 	GetFriendList(ctx context.Context, req *user.FriendListRequest, callOptions ...callopt.Option) (r *user.FriendListResponse, err error)
 	IsFriend(ctx context.Context, req *user.IsFriendRequest, callOptions ...callopt.Option) (r *user.IsFriendResponse, err error)
+	CompGetUser(ctx context.Context, req *user.CompGetUserRequest, callOptions ...callopt.Option) (r *user.CompGetUserResponse, err error)
+	CompMGetUser(ctx context.Context, req *user.CompMGetUserRequest, callOptions ...callopt.Option) (r *user.CompMGetUserResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -94,4 +96,14 @@ func (p *kUserServiceClient) GetFriendList(ctx context.Context, req *user.Friend
 func (p *kUserServiceClient) IsFriend(ctx context.Context, req *user.IsFriendRequest, callOptions ...callopt.Option) (r *user.IsFriendResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.IsFriend(ctx, req)
+}
+
+func (p *kUserServiceClient) CompGetUser(ctx context.Context, req *user.CompGetUserRequest, callOptions ...callopt.Option) (r *user.CompGetUserResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.CompGetUser(ctx, req)
+}
+
+func (p *kUserServiceClient) CompMGetUser(ctx context.Context, req *user.CompMGetUserRequest, callOptions ...callopt.Option) (r *user.CompMGetUserResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.CompMGetUser(ctx, req)
 }
